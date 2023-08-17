@@ -46,7 +46,12 @@ public class EmployeeDAO {
 		try {
 			
 			String sql = prop.getProperty("selectAll");
-			
+//			SELECT EMP_ID, EMP_NAME, EMP_NO, EMAIL, PHONE,
+//			NVL(DEPT_TITLE, '부서없음') DEPT_TITLE, JOB_NAME, SALARY
+//			FROM EMPLOYEE
+//			LEFT JOIN DEPARTMENT ON(DEPT_ID = DEPT_CODE)
+//			JOIN JOB USING(JOB_CODE)
+//			ORDER BY EMP_ID
 			// Statement 객체 생성
 			
 			stmt = conn.createStatement();
@@ -72,10 +77,11 @@ public class EmployeeDAO {
 				String jobName = rs.getString("JOB_NAME");
 				int salary = rs.getInt("SALARY");
 				
-				Employee emp = new Employee(empId, empName, empNo,
-						email, phone, departmentTitle, jobName, salary);
-				
-				empList.add(emp); // List 담기
+//				Employee emp = new Employee(empId, empName, empNo,
+//						email, phone, departmentTitle, jobName, salary);
+//				
+				empList.add(new Employee(empId, empName, empNo,
+						email, phone, departmentTitle, jobName, salary)); // List 담기
 				
 			} // while문 종료
 			
@@ -145,6 +151,12 @@ public class EmployeeDAO {
 		try {
 			
 			String sql = prop.getProperty("selectEmpId");
+//			SELECT EMP_ID, EMP_NAME, EMP_NO, EMAIL, PHONE,
+//			NVL(DEPT_TITLE, '부서없음') DEPT_TITLE, JOB_NAME, SALARY
+//			FROM EMPLOYEE
+//			LEFT JOIN DEPARTMENT ON(DEPT_ID = DEPT_CODE)
+//			JOIN JOB USING(JOB_CODE)
+//			WHERE EMP_ID = ?
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -234,6 +246,250 @@ public class EmployeeDAO {
 		}
 		
 		return result;
+	}
+
+	/** 입력 받은 부서와 일치하는 모든 사원 정보 조회 DAO
+	 * @param conn
+	 * @param deptTitle
+	 * @return
+	 * @throws Exception 
+	 */
+	public List<Employee> selectDeptEmp(Connection conn, String deptTitle) throws Exception {
+		
+		// 결과 저장용 변수 선언
+		List<Employee> empList = new ArrayList<Employee>();
+		
+		try {
+			
+			String sql = prop.getProperty("selectDeptEmp");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, deptTitle);
+			
+			// SQL을 수행 후 결과(ResultSet) 반환 받음
+			rs = pstmt.executeQuery();
+			
+			// 조회 결과를 얻어와 한 행씩 접근하여
+			// Employee 객체 생성 후 컬럼값 담기
+			// -> List 추가
+			while(rs.next()) {
+				
+				int empId = rs.getInt("EMP_ID");
+				// EMP_ID 컬럼은 문자열 컬럼이지만
+				// 저장된 값들이 모두 숫자 형태
+				// -> DB에서 자동으로 형변환 진행해서 얻어옴
+				
+				String empName = rs.getString("EMP_NAME");
+				String empNo = rs.getString("EMP_NO");
+				String email = rs.getString("EMAIL");
+				String phone = rs.getString("PHONE");
+				String departmentTitle = rs.getString("DEPT_TITLE");
+				String jobName = rs.getString("JOB_NAME");
+				int salary = rs.getInt("SALARY");
+				
+//						Employee emp = new Employee(empId, empName, empNo,
+//								email, phone, departmentTitle, jobName, salary);
+//						
+				empList.add(new Employee(empId, empName, empNo,
+						email, phone, departmentTitle, jobName, salary)); // List 담기
+				
+			} // while문 종료
+			
+			
+		} finally {
+			
+			close(stmt);
+			
+		}
+		
+		// 결과 반환
+		return empList;
+	}
+
+	/** 입력 받은 급여 이상을 받는 모든 사원 정보 조회 DAO
+	 * @param conn
+	 * @param salary
+	 * @return
+	 */
+	public List<Employee> selectSalaryEmp(Connection conn, int salary) throws Exception{
+		
+		// 결과 저장용 변수 선언
+		List<Employee> empList = new ArrayList<Employee>();
+		
+		try {
+			
+			String sql = prop.getProperty("selectSalaryEmp");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, salary);
+			
+			// SQL을 수행 후 결과(ResultSet) 반환 받음
+			rs = pstmt.executeQuery();
+			
+			// 조회 결과를 얻어와 한 행씩 접근하여
+			// Employee 객체 생성 후 컬럼값 담기
+			// -> List 추가
+			while(rs.next()) {
+				
+				int empId = rs.getInt("EMP_ID");
+				// EMP_ID 컬럼은 문자열 컬럼이지만
+				// 저장된 값들이 모두 숫자 형태
+				// -> DB에서 자동으로 형변환 진행해서 얻어옴
+				
+				String empName = rs.getString("EMP_NAME");
+				String empNo = rs.getString("EMP_NO");
+				String email = rs.getString("EMAIL");
+				String phone = rs.getString("PHONE");
+				String departmentTitle = rs.getString("DEPT_TITLE");
+				String jobName = rs.getString("JOB_NAME");
+				int salary1 = rs.getInt("SALARY");
+				
+//								Employee emp = new Employee(empId, empName, empNo,
+//										email, phone, departmentTitle, jobName, salary);
+//								
+				empList.add(new Employee(empId, empName, empNo,
+						email, phone, departmentTitle, jobName, salary1)); // List 담기
+				
+			} // while문 종료
+			
+			
+		} finally {
+			
+			close(stmt);
+			
+		}
+		
+		// 결과 반환
+			return empList;
+}
+
+	/** 부서별 급여 합 전체 조회 DAO
+	 * @param conn
+	 * @return
+	 */
+	public List<Employee> selectDeptTotalSalary(Connection conn) throws Exception{
+		
+		// 결과 저장용 변수 선언
+		List<Employee> empList = new ArrayList<Employee>();
+		
+		try {
+			
+			String sql = prop.getProperty("selectDeptTotalSalary");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			// SQL을 수행 후 결과(ResultSet) 반환 받음
+			rs = pstmt.executeQuery();
+			
+			// 조회 결과를 얻어와 한 행씩 접근하여
+			// Employee 객체 생성 후 컬럼값 담기
+			// -> List 추가
+			while(rs.next()) {
+				
+				String departmentTitle = rs.getString("DEPT_TITLE");
+				int salary1 = rs.getInt("SALARY");
+								
+				empList.add(new Employee(departmentTitle, salary1, "D")); // List 담기
+				
+			} // while문 종료
+			
+			
+		} finally {
+			
+			close(stmt);
+			
+		}
+		
+		// 결과 반환
+		return empList;
+}
+
+	/** 주민등록번호가 일치하는 사원 정보 조회 DAO
+	 * @param conn
+	 * @param empNo
+	 * @return
+	 */
+	public Employee selectEmpNo(Connection conn, String empNo) throws Exception{
+		
+		Employee emp = null;
+		
+		try {
+			
+			String sql = prop.getProperty("selectEmpNo");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, empNo);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				int empId2 = rs.getInt("EMP_ID");
+				String empName = rs.getString("EMP_NAME");
+				String empNo1 = rs.getString("EMP_NO");
+				String email = rs.getString("EMAIL");
+				String phone = rs.getString("PHONE");
+				String departmentTitle = rs.getString("DEPT_TITLE");
+				String jobName = rs.getString("JOB_NAME");
+				int salary = rs.getInt("SALARY");
+				
+				emp = new Employee(empId2, empName, empNo1, email,
+								phone, departmentTitle, jobName, salary 
+						);
+				
+				
+			}
+			
+			
+		} finally {
+			close(pstmt);
+		}
+		
+		return emp;
+	}
+
+	/** 직급별 급여 평균 조회 DAO
+	 * @param conn
+	 * @return
+	 */
+	public List<Employee> selectJobAvgSalary(Connection conn) throws Exception{
+		
+		// 결과 저장용 변수 선언
+		List<Employee> empList = new ArrayList<Employee>();
+		
+		try {
+			
+			String sql = prop.getProperty("selectJobAvgSalary");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			// SQL을 수행 후 결과(ResultSet) 반환 받음
+			rs = pstmt.executeQuery();
+			
+			// 조회 결과를 얻어와 한 행씩 접근하여
+			// Employee 객체 생성 후 컬럼값 담기
+			// -> List 추가
+			while(rs.next()) {
+				
+				String jobName = rs.getString("JOB_NAME");
+				int salary1 = rs.getInt("SALARY");
+								
+				empList.add(new Employee(jobName, salary1, "J")); // List 담기
+				
+			} // while문 종료
+			
+			
+		} finally {
+			
+			close(stmt);
+			
+		}
+		
+		// 결과 반환
+		return empList;
 	}
 
 	

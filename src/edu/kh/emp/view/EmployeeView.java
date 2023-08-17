@@ -67,6 +67,11 @@ public class EmployeeView {
 				case 3:  selectEmpId();   break;
 				case 4:  updateEmployee();   break;
 				case 5:  deleteEmployee();   break;
+				case 6:  selectDeptEmp();   break;
+				case 7:  selectSalaryEmp();  break;
+				case 8:  selectDeptTotalSalary();  break;
+				case 9:  selectEmpNo();  break;
+				case 10: selectJobAvgSalary();  break;
 				case 0:  System.out.println("프로그램을 종료합니다...");   break;
 				default: System.out.println("메뉴에 존재하는 번호만 입력하세요.");
 				}
@@ -172,6 +177,75 @@ public class EmployeeView {
 		printOne(emp);
 		
 	}
+	
+	/** 입력 받은 부서와 일치하는 모든 사원 정보 조회
+	 * 
+	 */
+	private void selectDeptEmp() throws Exception{
+		System.out.println("<입력 받은 부서와 일치하는 모든 사원 정보 조회>");
+		
+		System.out.print("부서명 입력 : ");
+		String deptTitle = sc.nextLine();
+		
+		List<Employee> empList = service.selectDeptEmp(deptTitle);
+		
+		printAll(empList);
+		
+	}
+	
+	/** 입력 받은 급여 이상을 받는 모든 사원 정보 조회
+	 * 
+	 */
+	private void selectSalaryEmp() throws Exception{
+		System.out.println("<입력 받은 급여 이상을 받는 모든 사원 정보 조회>");
+		
+		System.out.print("급여 입력 : ");
+		int salary = sc.nextInt();
+		
+		List<Employee> empList = service.selectSalaryEmp(salary);
+		
+		printAll(empList);
+		
+	}
+	
+	/** 부서별 급여 합 전체 조회
+	 * 
+	 */
+	private void selectDeptTotalSalary() throws Exception{
+		System.out.println("<부서별 급여 합 전체 조회>");
+		
+		List<Employee> empList = service.selectDeptTotalSalary();
+		
+		printDeptSalary(empList);
+		
+	}
+	
+	/** 주민등록번호가 일치하는 사원 정보 조회
+	 * 
+	 */
+	private void selectEmpNo() throws Exception{
+		System.out.println("<주민등록번호가 일치하는 사원 정보 조회>");
+		
+		System.out.print("주민등록번호 입력 : ");
+		String empNo = sc.nextLine();
+		
+		Employee emp = service.selectEmpNo(empNo);
+		
+		printOne(emp);
+		
+	}
+	
+	/** 직급별 급여 평균 조회
+	 * 
+	 */
+	private void selectJobAvgSalary() throws Exception{
+		System.out.println("<직급별 급여 평균 조회>");
+		
+		List<Employee> empList = service.selectJobAvgSalary();
+		
+		printJobSalary(empList);
+		
+	}
 
 	/** 사원 정보 추가
 	 * @throws
@@ -256,6 +330,50 @@ public class EmployeeView {
 				System.out.printf(" %2d  | %4s | %s | %20s | %s | %s | %s | %d\n",
 						emp.getEmpId(), emp.getEmpName(), emp.getEmpNo(), emp.getEmail(), 
 						emp.getPhone(), emp.getDepartmentTitle(), emp.getJobName(), emp.getSalary());
+			}
+		
+		}
+		
+		return;
+
+	}
+	
+	/** 부서별 급여합 출력
+	 * 
+	 */
+	public void printDeptSalary(List<Employee> empList) {
+		
+		if(empList.isEmpty()) {
+			System.out.println("조회된 정보가 없습니다.");
+			
+		} else {
+			System.out.println("부서 | 급여(합)" );
+			System.out.println("------------------------------------------------------------------------------------------------");
+			for(Employee emp : empList) { 
+				System.out.printf("%s | %d\n",
+						emp.getDepartmentTitle(), emp.getSalary());
+			}
+		
+		}
+		
+		return;
+
+	}	
+	
+	/** 직급별 급여평균 출력
+	 * 
+	 */
+	public void printJobSalary(List<Employee> empList) {
+		
+		if(empList.isEmpty()) {
+			System.out.println("조회된 정보가 없습니다.");
+			
+		} else {
+			System.out.println("직급 | 급여(평균)" );
+			System.out.println("------------------------------------------------------------------------------------------------");
+			for(Employee emp : empList) { 
+				System.out.printf("%s | %d\n",
+						emp.getJobName(), emp.getSalary());
 			}
 		
 		}

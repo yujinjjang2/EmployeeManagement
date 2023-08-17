@@ -22,7 +22,17 @@ public class Employee {
 	public Employee() {}
 
 
-	
+	public Employee(String departmentTitle, int salary, String gb) {
+		super();
+		
+		if(gb.equals("D")) {
+			this.departmentTitle = departmentTitle;
+			this.salary = salary;
+		} else {
+			this.jobName = departmentTitle;
+			this.salary = salary;
+		}
+	}
 
 
 	public Employee(int empId, String empName, String empNo, String email, String phone, String departmentTitle,
