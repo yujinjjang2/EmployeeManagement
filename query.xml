@@ -31,4 +31,8 @@
 		WHERE EMP_ID = ?
 	</entry>
 	
+	<entry key="deleteEmployee">
+		DELETE FROM EMPLOYEE WHERE EMP_ID = ?
+	</entry>
+	
 </properties>
