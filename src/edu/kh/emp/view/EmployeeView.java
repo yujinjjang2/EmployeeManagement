@@ -2,6 +2,7 @@ package edu.kh.emp.view;
 
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import edu.kh.emp.model.service.EmployeeService;
@@ -178,35 +179,72 @@ public class EmployeeView {
 		
 	}
 	
+//	/** 입력 받은 부서와 일치하는 모든 사원 정보 조회
+//	 * 
+//	 */
+//	private void selectDeptEmp() throws Exception{
+//		System.out.println("<입력 받은 부서와 일치하는 모든 사원 정보 조회>");
+//		
+//		System.out.print("부서명 입력 : ");
+//		String deptTitle = sc.nextLine();
+//		
+//		List<Employee> empList = service.selectDeptEmp(deptTitle);
+//		
+//		printAll(empList);
+//		
+//	}
+	
 	/** 입력 받은 부서와 일치하는 모든 사원 정보 조회
 	 * 
 	 */
 	private void selectDeptEmp() throws Exception{
-		System.out.println("<입력 받은 부서와 일치하는 모든 사원 정보 조회>");
+		System.out.println("<입력받은 부서와 일치하는 모든 사원 정보 조회>");
 		
-		System.out.print("부서명 입력 : ");
-		String deptTitle = sc.nextLine();
+		System.out.print("부서명 : ");
+		String departmentTitle = sc.nextLine();
 		
-		List<Employee> empList = service.selectDeptEmp(deptTitle);
-		
-		printAll(empList);
-		
+		printAll( service.selectDeptEmp(departmentTitle) );
 	}
+	
+//	/** 입력 받은 급여 이상을 받는 모든 사원 정보 조회
+//	 * 
+//	 */
+//	private void selectSalaryEmp() throws Exception{
+//		System.out.println("<입력 받은 급여 이상을 받는 모든 사원 정보 조회>");
+//		
+//		System.out.print("급여 입력 : ");
+//		int salary = sc.nextInt();
+//		
+//		List<Employee> empList = service.selectSalaryEmp(salary);
+//		
+//		printAll(empList);
+//		
+//	}
 	
 	/** 입력 받은 급여 이상을 받는 모든 사원 정보 조회
 	 * 
 	 */
-	private void selectSalaryEmp() throws Exception{
-		System.out.println("<입력 받은 급여 이상을 받는 모든 사원 정보 조회>");
+	private void selectSalaryEmp() throws Exception {
+		System.out.println("<입력받은 급여 이상을 받는 모든 사원 정보 조회>");
 		
-		System.out.print("급여 입력 : ");
+		System.out.print("급여 : ");
 		int salary = sc.nextInt();
 		
-		List<Employee> empList = service.selectSalaryEmp(salary);
-		
-		printAll(empList);
+		printAll( service.selectSalaryEmp(salary) );
 		
 	}
+	
+//	/** 부서별 급여 합 전체 조회
+//	 * 
+//	 */
+//	private void selectDeptTotalSalary() throws Exception{
+//		System.out.println("<부서별 급여 합 전체 조회>");
+//		
+//		List<Employee> empList = service.selectDeptTotalSalary();
+//		
+//		printDeptSalary(empList);
+//		
+//	}
 	
 	/** 부서별 급여 합 전체 조회
 	 * 
@@ -214,26 +252,57 @@ public class EmployeeView {
 	private void selectDeptTotalSalary() throws Exception{
 		System.out.println("<부서별 급여 합 전체 조회>");
 		
-		List<Employee> empList = service.selectDeptTotalSalary();
+		// D1 : 8000000 원
+		Map<String, Integer> map = service.selectDeptTotalSalary();
 		
-		printDeptSalary(empList);
+		for( String key : map.keySet() ) {
+			
+			System.out.println( key + " : " + map.get(key) );
+			
+		}
 		
 	}
 	
-	/** 주민등록번호가 일치하는 사원 정보 조회
+//	/** 주민등록번호가 일치하는 사원 정보 조회
+//	 * 
+//	 */
+//	private void selectEmpNo() throws Exception{
+//		System.out.println("<주민등록번호가 일치하는 사원 정보 조회>");
+//		
+//		System.out.print("주민등록번호 입력 : ");
+//		String empNo = sc.nextLine();
+//		
+//		Employee emp = service.selectEmpNo(empNo);
+//		
+//		printOne(emp);
+//		
+//	}
+	
+	/** 주민등록 번호가 일치하는 사원 정보 조회
 	 * 
 	 */
 	private void selectEmpNo() throws Exception{
-		System.out.println("<주민등록번호가 일치하는 사원 정보 조회>");
-		
+		System.out.println("<주민등록 번호가 일치하는 사원 정보 조회>");
 		System.out.print("주민등록번호 입력 : ");
-		String empNo = sc.nextLine();
+		String empNo = sc.next();
 		
 		Employee emp = service.selectEmpNo(empNo);
-		
 		printOne(emp);
 		
+//		printOne(service.selectEmpNo(empNo))
 	}
+	
+//	/** 직급별 급여 평균 조회
+//	 * 
+//	 */
+//	private void selectJobAvgSalary() throws Exception{
+//		System.out.println("<직급별 급여 평균 조회>");
+//		
+//		List<Employee> empList = service.selectJobAvgSalary();
+//		
+//		printJobSalary(empList);
+//		
+//	}
 	
 	/** 직급별 급여 평균 조회
 	 * 
@@ -241,9 +310,11 @@ public class EmployeeView {
 	private void selectJobAvgSalary() throws Exception{
 		System.out.println("<직급별 급여 평균 조회>");
 		
-		List<Employee> empList = service.selectJobAvgSalary();
+		Map<String, Double> map = service.selectJobAvgSalary();
 		
-		printJobSalary(empList);
+		for(String key : map.keySet()) {
+			System.out.println( key + " : " + map.get(key) + "원");
+		}
 		
 	}
 

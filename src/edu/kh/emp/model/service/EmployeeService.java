@@ -2,6 +2,7 @@ package edu.kh.emp.model.service;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 import static edu.kh.emp.common.JDBCTemplate.*;
 import static edu.kh.emp.common.JDBCTemplate.commit;
@@ -98,21 +99,36 @@ public class EmployeeService {
 		return result;
 	}
 
-	/** 입력 받은 부서와 일치하는 모든 사원 정보 조회 서비스
-	 * @param deptTitle
-	 * @return
-	 */
-	public List<Employee> selectDeptEmp(String deptTitle) throws Exception{
-		
-		Connection conn = getConnection();
-	
-		List<Employee> list = dao.selectDeptEmp(conn, deptTitle);
-		
-		close(conn);
-		
-		return list;
-	}
+//	/** 입력 받은 부서와 일치하는 모든 사원 정보 조회 서비스
+//	 * @param deptTitle
+//	 * @return
+//	 */
+//	public List<Employee> selectDeptEmp(String deptTitle) throws Exception{
+//		
+//		Connection conn = getConnection();
+//	
+//		List<Employee> list = dao.selectDeptEmp(conn, deptTitle);
+//		
+//		close(conn);
+//		
+//		return list;
+//	}
 
+//	/** 입력 받은 급여 이상을 받는 모든 사원 정보 조회 서비스
+//	 * @param salary
+//	 * @return
+//	 */
+//	public List<Employee> selectSalaryEmp(int salary) throws Exception{
+//		
+//		Connection conn = getConnection();
+//		
+//		List<Employee> list = dao.selectSalaryEmp(conn, salary);
+//		
+//		close(conn);
+//		
+//		return list;
+//	}
+	
 	/** 입력 받은 급여 이상을 받는 모든 사원 정보 조회 서비스
 	 * @param salary
 	 * @return
@@ -128,26 +144,54 @@ public class EmployeeService {
 		return list;
 	}
 
+//	/** 부서별 급여 합 전체 조회 서비스
+//	 * @return
+//	 */
+//	public List<Employee> selectDeptTotalSalary() throws Exception{
+//		
+//		Connection conn = getConnection();
+//		
+//		List<Employee> list = dao.selectDeptTotalSalary(conn);
+//		
+//		close(conn);
+//		
+//		return list;
+//	}
+	
 	/** 부서별 급여 합 전체 조회 서비스
-	 * @return
+	 * @return map
 	 */
-	public List<Employee> selectDeptTotalSalary() throws Exception{
-		
+	public Map<String, Integer> selectDeptTotalSalary() throws Exception{
 		Connection conn = getConnection();
 		
-		List<Employee> list = dao.selectDeptTotalSalary(conn);
+		Map<String, Integer> map = dao.selectDeptTotalSalary(conn);
 		
 		close(conn);
 		
-		return list;
+		return map;
+		
 	}
 
-	/** 주민등록번호가 일치하는 사원 정보 조회 서비스
+//	/** 주민등록번호가 일치하는 사원 정보 조회 서비스
+//	 * @param empNo
+//	 * @return
+//	 */
+//	public Employee selectEmpNo(String empNo) throws Exception{
+//		
+//		Connection conn = getConnection();
+//		
+//		Employee emp = dao.selectEmpNo(conn, empNo);
+//		
+//		close(conn);
+//		
+//		return emp;
+//	}
+	
+	/** 주민등록 번호가 일치하는 사원 정보 조회 서비스
 	 * @param empNo
 	 * @return
 	 */
 	public Employee selectEmpNo(String empNo) throws Exception{
-		
 		Connection conn = getConnection();
 		
 		Employee emp = dao.selectEmpNo(conn, empNo);
@@ -155,16 +199,46 @@ public class EmployeeService {
 		close(conn);
 		
 		return emp;
+		
 	}
 
+//	/** 직급별 급여 평균 조회 서비스
+//	 * @return
+//	 */
+//	public List<Employee> selectJobAvgSalary() throws Exception{
+//		
+//		Connection conn = getConnection();
+//		
+//		List<Employee> list = dao.selectJobAvgSalary(conn);
+//		
+//		close(conn);
+//		
+//		return list;
+//	}
+	
 	/** 직급별 급여 평균 조회 서비스
 	 * @return
 	 */
-	public List<Employee> selectJobAvgSalary() throws Exception{
+	public Map<String, Double> selectJobAvgSalary() throws Exception{
 		
 		Connection conn = getConnection();
 		
-		List<Employee> list = dao.selectJobAvgSalary(conn);
+		Map<String, Double> map = dao.selectJobAvgSalary(conn);
+		
+		close(conn);
+		
+		return map;
+	}
+
+	/** 입력 받은 부서와 일치하는 모든 사원 정보 조회 서비스
+	 * @param departmentTitle
+	 * @return
+	 */
+	public List<Employee> selectDeptEmp(String departmentTitle) throws Exception{
+		
+		Connection conn = getConnection();
+		
+		List<Employee> list = dao.selectDeptEmp(conn, departmentTitle);
 		
 		close(conn);
 		
