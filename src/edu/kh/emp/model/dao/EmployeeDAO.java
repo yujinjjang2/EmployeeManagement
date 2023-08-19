@@ -56,10 +56,12 @@ public class EmployeeDAO {
 //			ORDER BY EMP_ID
 			// Statement 객체 생성
 			
-			stmt = conn.createStatement();
+//			stmt = conn.createStatement();
+			pstmt = conn.prepareStatement(sql);
 			
 			// SQL을 수행 후 결과(ResultSet) 반환 받음
-			rs = stmt.executeQuery(sql);
+//			rs = stmt.executeQuery(sql);
+			rs = pstmt.executeQuery();
 			
 			// 조회 결과를 얻어와 한 행씩 접근하여
 			// Employee 객체 생성 후 컬럼값 담기
@@ -90,7 +92,7 @@ public class EmployeeDAO {
 			
 		} finally {
 			
-			close(stmt);
+			close(pstmt);
 			
 		}
 		
