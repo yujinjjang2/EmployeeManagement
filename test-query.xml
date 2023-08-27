@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<comment>test-query</comment>
+	
+	<entry key="selectAll">
+		SELECT  EMP_ID, EMP_NAME, EMP_NO, EMAIL, PHONE, JOB_CODE,
+				SAL_LEVEL, SALARY, BONUS, MANAGER_ID
+		FROM EMPLOYEE5
+	</entry>
+	
+	<entry key="insertEmployee">
+		INSERT INTO EMPLOYEE5(EMP_ID, EMP_NAME, EMP_NO) VALUES(?, ?, ?)
+	</entry>
+	
+	<entry key="selectEmpId">
+		SELECT  EMP_ID, EMP_NAME, EMP_NO, EMAIL, PHONE, JOB_CODE, SAL_LEVEL,
+				SALARY, BONUS, MANAGER_ID
+		FROM EMPLOYEE5
+		WHERE EMP_ID = ?
+	</entry>
+	
+	<entry key="updateEmployee">
+		UPDATE EMPLOYEE5 SET 
+		EMP_NAME = ?,
+		EMP_NO = ?
+		WHERE EMP_ID = ?
+	</entry>
+	
+	<entry key="selectDeptTotalSalary">
+		SELECT NVL(DEPT_TITLE, '부서없음') DEPT_TITLE, SUM(SALARY) SUM_SALARY
+		FROM EMPLOYEE
+		LEFT JOIN DEPARTMENT ON(DEPT_CODE = DEPT_ID)
+		GROUP BY DEPT_TITLE
+	</entry>
+	
+	<entry key="selectJobAvgSalary">
+		SELECT JOB_NAME, ROUND(AVG(SALARY)) AVG_SALARY
+		FROM EMPLOYEE
+		JOIN JOB USING(JOB_CODE)
+		GROUP BY JOB_NAME
+	</entry>
+	
+	<entry key="deleteEmployee">
+		DELETE FROM EMPLOYEE5 WHERE EMP_ID = ?
+	</entry>
+	
+	<entry key="selectDeptEmp">
+		SELECT EMP_ID, EMP_NAME, EMP_NO, EMAIL, PHONE, DEPT_CODE,
+		       JOB_CODE, SAL_LEVEL, SALARY, BONUS, MANAGER_ID
+		FROM EMPLOYEE
+		LEFT JOIN DEPARTMENT ON(DEPT_CODE = DEPT_ID)
+		WHERE DEPT_TITLE = ?
+	</entry>
+	
+	<entry key="selectSalaryEmp">
+		SELECT EMP_ID, EMP_NAME, EMP_NO, EMAIL, PHONE, 
+			   DEPT_CODE, JOB_CODE, SAL_LEVEL, SALARY, BONUS, MANAGER_ID
+		FROM EMPLOYEE
+		WHERE SALARY >= ?
+	</entry>
+	
+	<entry key="selectEmpNo">
+		SELECT EMP_ID, EMP_NAME, EMP_NO, EMAIL, PHONE, 
+			   DEPT_CODE, JOB_CODE, SAL_LEVEL, SALARY, BONUS, MANAGER_ID
+		FROM EMPLOYEE
+		WHERE EMP_NO = ?
+	</entry>
+	
+</properties>
